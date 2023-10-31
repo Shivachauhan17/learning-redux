@@ -5,10 +5,7 @@ import { UseSelector, useSelector } from "react-redux/es/hooks/useSelector";
 
 import "./Product.css";
 const Product = ({ name, id, imgURL, price }) => {
-  const cartItems=useSelector((state)=> state.cart.itemsList)
-
-
-  console.log(cartItems)
+  
 
   const dispatch=useDispatch()
   
