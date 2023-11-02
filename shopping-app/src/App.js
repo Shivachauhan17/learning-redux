@@ -4,8 +4,17 @@ import Auth from "./components/Auth";
 import Layout from "./components/Layout";
 import { UseSelector, useSelector } from "react-redux/es/hooks/useSelector";
 import Notification from "./components/Notification";
+import { useDispatch } from "react-redux";
+import { uiActions } from "./store/ui-slice";
+import { sendCartData } from "./store/cart-slice";
+
+let firstRender=true;
 
 function App() {
+const dispatch=useDispatch();
+
+  const notification=useSelector(state=>state.ui.notification)
+
   const cart=useSelector(state=>state.cart)
 
   const isLoggedIn=useSelector(state=>state.auth.isLoggedIn)
@@ -13,15 +22,13 @@ function App() {
   const cartItems=useSelector((state)=> state.cart.itemsList)
 
   useEffect(()=>{
-    const sendRequest=async()=>{
-      const res=await fetch('https://redux-shopping-app-3785e-default-rtdb.firebaseio.com/cartItems.json',{
-        method:'PUT',
-        body:JSON.stringify(cart)
-      })
-      const data=await res.json();
+    if(firstRender){
+      firstRender=false;
+      return
     }
-
-    sendRequest();
+    
+    dispatch(sendCartData(cart))
+    
     
   },[cart])
 
@@ -30,7 +37,7 @@ function App() {
 
   return (
     <div className="App">
-      <Notification type='success' message={'thiis is a dummy message'} />
+      <Notification type={notification.type} message={notification.message} />
       {!isLoggedIn && <Auth />}
       {isLoggedIn && <Layout />}
     </div>

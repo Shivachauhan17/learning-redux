@@ -2,13 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const uiSlice=createSlice({
     name:'ui-slice',
-    initialState:{notification:null},
+    initialState:{notification:{message:"",
+        type:"error",
+        open:false}},
     reducers:{
         showNotification(state,action){
             state.notification={
                 message:action.payload.message,
                 type:action.payload.type,
-                open:action.payload.opn
+                open:action.payload.open
             }
         }
     }
